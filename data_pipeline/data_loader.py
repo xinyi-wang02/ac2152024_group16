@@ -1,7 +1,8 @@
 from google.cloud import storage
-#from tqdm import tqdm
+from tqdm import tqdm
 from pathlib import Path
 from google.cloud.storage import Client, transfer_manager
+import argparse
 
 def upload_directory_with_transfer_manager(bucket_name, source_directory, workers=8):
     """Upload every file in a directory, including all files in subdirectories.
@@ -26,7 +27,6 @@ def upload_directory_with_transfer_manager(bucket_name, source_directory, worker
     # some CPU and memory resources until finished. Threads can be used instead
     # of processes by passing `worker_type=transfer_manager.THREAD`.
     # workers=8
-
 
     storage_client = Client()
     bucket = storage_client.bucket(bucket_name)
@@ -56,20 +56,24 @@ def upload_directory_with_transfer_manager(bucket_name, source_directory, worker
         bucket, string_paths, source_directory=source_directory, max_workers=workers
     )
 
-    for name, result in zip(string_paths, results):
+    for name, result in tqdm(zip(string_paths, results)):
         # The results list is either `None` or an exception for each filename in
         # the input list, in order.
 
         if isinstance(result, Exception):
             print("Failed to upload {} due to exception: {}".format(name, result))
-        else:
-            print("Uploaded {} to {}.".format(name, bucket.name))
+        #else:
+            #print("Uploaded {} to {}.".format(name, bucket.name))
+
 
 
 if __name__ == "__main__":
-    client = storage.Client()
-    bucket_name = "cs215_car_dataset_w_class"
-    bucket = client.bucket(bucket_name)
-    source_directory = "/no_ship/car_test"
-    upload_directory_with_transfer_manager(bucket_name=bucket_name, source_directory=source_directory, workers=8)
+    parser = argparse.ArgumentParser(description='Upload Data to GCP')
+
+    parser.add_argument("-s", "--source")
+    parser.add_argument("-b", "--bucket")
+
+    args = parser.parse_args()
+    bucket_name = args.bucket if args.bucket else "cs215_car_dataset_w_class"
+    upload_directory_with_transfer_manager(bucket_name=bucket_name, source_directory=args.source, workers=8)
     print("done")

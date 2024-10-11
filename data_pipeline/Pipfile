@@ -11,6 +11,8 @@ google-cloud-storage = "*"
 numpy = "*"
 pandas = "*"
 pyyaml = "*"
+scikit-learn = "*"
+tqdm = "*"
 
 
 [requires]

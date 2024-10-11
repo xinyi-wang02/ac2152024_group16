@@ -20,9 +20,7 @@ ADD . /
 RUN mkdir -p no_ship
 
 RUN pipenv sync
-
+RUN chmod +x entrypoint.sh
 # Entry point
-ENTRYPOINT ["/bin/bash"]
-
+ENTRYPOINT ["/bin/bash","./entrypoint.sh"]
 # Get into the pipenv shell
-CMD ["-c", "pipenv run python data_loader.py"]
