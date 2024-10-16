@@ -3,4 +3,4 @@ outs:
   size: 785481
   nfiles: 5
   hash: md5
-  path: cheese_dataset
+  path: car_dataset
