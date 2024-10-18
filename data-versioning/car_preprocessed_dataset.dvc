@@ -1,0 +1,6 @@
+outs:
+- md5: 3e50cea6e340bd430ea1d783bd49354e.dir
+  size: 1989625791
+  nfiles: 16185
+  hash: md5
+  path: car_preprocessed_dataset

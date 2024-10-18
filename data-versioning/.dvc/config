@@ -1,0 +1,4 @@
+[core]
+    remote = car_preprocessed_dataset
+['remote "car_preprocessed_dataset"']
+    url = gs://cs215_car_dataset_w_class/dvc_store
