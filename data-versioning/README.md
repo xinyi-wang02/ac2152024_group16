@@ -12,3 +12,6 @@ For the purposes of our project, there is no need for frequent updating of our d
 
 It would be more helpful to use Vertex AI for the future milestones. 
 
+data versioning is used for this purpose
+how it is used
+why are we using it to our project
