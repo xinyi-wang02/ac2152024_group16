@@ -35,7 +35,7 @@
         └── train_model.py
 ```
 
-# AC215 - Milestone2 - Cheesy App
+# AC215 - Milestone2 - CarsAI
 
 **Team Members**
 Nuoya Jiang, John Jun, Seshu Mallina, Harper Wang
