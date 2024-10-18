@@ -4,16 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-dvc = "*"
 
 [packages]
 google-cloud-storage = "*"
-numpy = "*"
 pandas = "*"
-pyyaml = "*"
-scikit-learn = "*"
-tqdm = "*"
-
+dvc = "*"
+dvc-gs = "*"
 
 [requires]
 python_version = "3.11"
