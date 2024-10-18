@@ -44,15 +44,14 @@ Nuoya Jiang, John Jun, Seshu Mallina, Harper Wang
 The Car Fever Group (Group 16)
 
 **Project**
-In this project, we aim to develop an AI-powered cheese application. The app will feature visual recognition technology to identify various types of cheese and include a chatbot for answering all kinds of cheese-related questions. Users can simply take a photo of the cheese, and the app will identify it, providing detailed information. Additionally, the chatbot will allow users to ask cheese-related questions. It will be powered by a RAG model and fine-tuned models, making it a specialist in cheese expertise.
+This project aims to develop a deep learning-powered vehicle classification system that can identify a car’s make, model, and year from an uploaded image. The system will use deep learning techniques to accurately process the image and display the vehicle’s information to the user. Additionally, we will integrate a chatbot powered by the Gemini API, enabling users to ask questions about the identified car’s features, history, or specifications.
 
 ### Milestone2 ###
 
 In this milestone, we have the components for data management, including versioning, as well as the classification model scripts.
 
 **Data**
-We gathered a dataset of 100,000 cheese images representing approximately 1,500 different varieties. The dataset, approximately 100GB in size, was collected from the following sources: (1), (2), (3). We have stored it in a private Google Cloud Bucket.
-Additionally, we compiled 250 bibliographical sources on cheese, including books and reports, from sources such as (4) and (5).
+We used the Stanford Car dataset that has 107,291 car images representing 195 different models of cars. We have stored it in a private Google Cloud Bucket.
 
 **Data Pipeline Containers**
 1. One container processes the 100GB dataset by resizing the images and storing them back to Google Cloud Storage (GCS).
@@ -83,12 +82,9 @@ Additionally, we compiled 250 bibliographical sources on cheese, including books
 Instructions for running the Dockerfile can be added here.
 To run Dockerfile - `Instructions here`
 
-**Models container**
-- This container has scripts for model training, rag pipeline and inference
-- Instructions for running the model container - `Instructions here`
+**Models scripts**
+- The model folder contains a model fine-tuning script, Dockerfile and package requirements. By the end of this milestone, We are working on running the model train process on a virtual machine instance with CPU. We will set up the model fine-tuning workflow on a virtual machine instance with GPU in future work. 
+- The screenshot of Virtual Machine Instance was produced from a CPU-based machine
 
 **Notebooks/Reports**
-This folder contains code that is not part of container - for e.g: Application mockup, EDA, any 🔍 🕵️‍♀️ 🕵️‍♂️ crucial insights, reports or visualizations.
-
-----
-You may adjust this template as appropriate for your project.
+This folder contains code that is not part of container - EDA, experiment model fine-tuning notebook, and statement of work.
