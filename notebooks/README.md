@@ -25,11 +25,12 @@ I plan to experiment a bit more with the models to get to an accuracy of >70%.
 
 Some things I was considering are:
 1. Try to train the models for more epochs ie at least 20-25
-2. Try ensembling methods to combine predictions from multiple models
-3. Also try out other model architecures like GhostNET and ShuffleNET2
-4. Finetune other model using different hyperparameters
-5. Try out other loss functions other than CrossEntropy()
-6. Try SMOTE and other methods to account for class imbalance and not use the Cross Entropy Loss function
+2. Add more images from the test dataset to the train dataset since its a 50/50 split
+3. Try ensembling methods to combine predictions from multiple models
+4. Also try out other model architecures like GhostNET and ShuffleNET2
+5. Finetune other models using different hyperparameters
+6. Try out other loss functions other than CrossEntropy()
+7. Try SMOTE and other methods to account for class imbalance and not use the Cross Entropy Loss function
 
 
 
