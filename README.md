@@ -51,7 +51,7 @@ This project aims to develop a deep learning-powered vehicle classification syst
 In this milestone, we have the components for data management, including versioning, as well as the classification model scripts.
 
 **Data**
-We used the Stanford Car dataset that has 107,291 car images representing 195 different models of cars. We have stored it in a private Google Cloud Bucket.
+We used the Stanford Car dataset that has 16,191 car images representing 195 different models of cars. We have stored it in a private Google Cloud Bucket.
 
 **Data Pipeline Containers**
 1. One container processes the 100GB dataset by resizing the images and storing them back to Google Cloud Storage (GCS).
