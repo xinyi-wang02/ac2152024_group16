@@ -1,9 +1,4 @@
-## Milestone 2 Template
-
-```
-The files are empty placeholders only. You may adjust this template as appropriate for your project.
-Never commit large data files,trained models, personal API Keys/secrets to GitHub
-```
+## Milestone 2 
 
 #### Project Milestone 2 Organization
 
@@ -11,42 +6,41 @@ Never commit large data files,trained models, personal API Keys/secrets to GitHu
 ├── Readme.md
 ├── data # DO NOT UPLOAD DATA TO GITHUB, only .gitkeep to keep the directory or a really small sample
 ├── notebooks
-│   └── eda.ipynb
+│   └── eda_notebook.ipynb
+│   └── model_finetune_experiment.ipynb
 ├── references
 ├── reports
 │   └── Statement of Work_Sample.pdf
 └── src
     ├── datapipeline
-    │   ├── Dockerfile
+    │   ├── data_loader.py
+    |   ├── Dockerfile
     │   ├── Pipfile
     │   ├── Pipfile.lock
-    │   ├── dataloader.py
     │   ├── docker-shell.sh
-    │   ├── preprocess_cv.py
-    │   ├── preprocess_rag.py
-    ├── docker-compose.yml
+    │   ├── preprocess.py
+    │   ├── entrypoint.sh
     └── models
         ├── Dockerfile
-        ├── docker-shell.sh
-        ├── infer_model.py
-        ├── model_rag.py
+        ├── requirements.txt
+	├── vm_instance_screenshot.png
         └── train_model.py
 ```
 
 # AC215 - Milestone2 - Cheesy App
 
 **Team Members**
-Pavlos Parmigianopapas, Pavlos Ricottapapas and Pavlos Gouda-papas
+Nuoya Jiang, John Jun, Seshu Mallina, Harper Wang
 
 **Group Name**
-The Grate Cheese Group
+The Car Fever Group (Group 16)
 
 **Project**
 In this project, we aim to develop an AI-powered cheese application. The app will feature visual recognition technology to identify various types of cheese and include a chatbot for answering all kinds of cheese-related questions. Users can simply take a photo of the cheese, and the app will identify it, providing detailed information. Additionally, the chatbot will allow users to ask cheese-related questions. It will be powered by a RAG model and fine-tuned models, making it a specialist in cheese expertise.
 
 ### Milestone2 ###
 
-In this milestone, we have the components for data management, including versioning, as well as the computer vision and language models.
+In this milestone, we have the components for data management, including versioning, as well as the classification model scripts.
 
 **Data**
 We gathered a dataset of 100,000 cheese images representing approximately 1,500 different varieties. The dataset, approximately 100GB in size, was collected from the following sources: (1), (2), (3). We have stored it in a private Google Cloud Bucket.
