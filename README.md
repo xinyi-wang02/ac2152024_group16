@@ -3,7 +3,7 @@
 #### Project Milestone 2 Organization
 
 ```
-├── Readme.md
+├── README.md
 ├── data # DO NOT UPLOAD DATA TO GITHUB, only .gitkeep to keep the directory or a really small sample
 ├── notebooks
 │   └── eda_notebook.ipynb
@@ -20,10 +20,18 @@
     │   ├── docker-shell.sh
     │   ├── preprocess.py
     │   ├── entrypoint.sh
+    └── data-versioning
+    |   ├── car_preprocessed_dataset.dvc
+    |   ├── Dockerfile
+    │   ├── Pipfile
+    │   ├── Pipfile.lock
+    │   ├── docker-shell.sh
+    │   ├── docker-entrypoint.sh
+    │   ├── README.md
     └── models
         ├── Dockerfile
         ├── requirements.txt
-	├── vm_instance_screenshot.png
+	      ├── vm_instance_screenshot.png
         └── train_model.py
 ```
 
