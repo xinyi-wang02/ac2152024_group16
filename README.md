@@ -5,7 +5,8 @@
 ├── Readme.md
 ├── data
 ├── notebooks
-│   └── eda.ipynb
+│   └── Notebook.ipynb
+│   └── othermodels.ipynb
 ├── references
 ├── reports
 │   └── Statement of Work_Sample.pdf
@@ -17,11 +18,8 @@
     │   ├── dataloader.py
     │   ├── docker-shell.sh
     │   ├── preprocess_cv.py
-    │   ├── preprocess_rag.py
     ├── docker-compose.yml
     └── models
         ├── Dockerfile
         ├── docker-shell.sh
-        ├── infer_model.py
-        ├── model_rag.py
         └── train_model.py
