@@ -13,15 +13,8 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip install --no-cache-dir \
-    pandas \
-    argparse \
-    pillow \
-    matplotlib \
-    numpy \
-    scikit-learn \
-    torch torchvision tqdm
+# Install Python dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Entry point
 ENTRYPOINT ["/bin/bash"]

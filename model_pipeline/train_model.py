@@ -1,5 +1,6 @@
 import gc
 import os
+import io
 import pandas as pd
 import argparse
 from PIL import Image
@@ -14,6 +15,8 @@ from torchvision import models
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+
+from google.cloud import storage
 
 
 def split_csv(csv_path, train_csv_path, test_csv_path, test_size=0.2, random_state=42):
@@ -84,17 +87,26 @@ class ImageDataset(Dataset):
     """
     Custom Dataset for loading images and labels from the subset CSV.
     """
-    def __init__(self, csv_file, images_folder, transform=None):
+    def __init__(self, csv_file, bucket_name, transform=None):
         self.df = pd.read_csv(csv_file)
-        self.images_folder = images_folder
+        self.bucket_name = bucket_name
+        self.client = storage.Client()
         self.transform = transform
 
     def __len__(self):
         return len(self.df)
 
+    def read_image_from_gcs(self, image_path):
+        """Reads an image from GCS."""
+        bucket = self.client.bucket(self.bucket_name)
+        blob = bucket.blob(image_path)
+        image_bytes = blob.download_as_bytes()
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        return image
+    
     def __getitem__(self, idx):
         img_name = os.path.join(self.images_folder, self.df.iloc[idx]['image_name'])
-        image = Image.open(img_name).convert("RGB")
+        image = self.read_image_from_gcs(img_name)
         label = int(self.df.iloc[idx]['label_encoded'])
 
         if self.transform:
@@ -102,7 +114,7 @@ class ImageDataset(Dataset):
 
         return { 'image' : image, 'label':label, 'img_name': img_name }
     
-def create_dataloader(loader_csv_path, all_images_folder, batch_size):
+def create_dataloader(loader_csv_path, bucket_name, all_images_folder, batch_size):
     """
     Creates a DataLoader from the subset CSV file.
 
@@ -119,7 +131,7 @@ def create_dataloader(loader_csv_path, all_images_folder, batch_size):
         transforms.ToTensor(),          # Convert images to PyTorch tensors
     ])
 
-    dataset = ImageDataset(csv_file=loader_csv_path, images_folder=all_images_folder, transform=transform)
+    dataset = ImageDataset(csv_file=loader_csv_path, bucket_name=bucket_name, images_folder=all_images_folder, transform=transform)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     return dataloader
@@ -193,6 +205,7 @@ num_img = 128
 train_or_not = True
 
 loader_csv_path = subset_csv_path
+bucket_name = "cs215_car_dataset_w_class"
 all_images_folder = "/cs215_car_dataset_w_class/car_preprocessed_folder/all_images"
 batch_size = 32
 
@@ -202,5 +215,5 @@ learning_rate=0.0001
 
 split_csv(csv_path, train_csv_path, test_csv_path, test_size, random_state)
 create_subset_csv(subset_csv_path, all_images_folder, train_iteration_folder, num_img, train_or_not)
-train_loader = create_dataloader(loader_csv_path, all_images_folder, batch_size)
+train_loader = create_dataloader(loader_csv_path, bucket_name, all_images_folder, batch_size)
 fine_tune_resnet(train_loader, num_classes, num_epochs, learning_rate)
