@@ -1,0 +1,10 @@
+argparse
+pandas
+Pillow
+matplotlib
+numpy
+scikit-learn
+torch
+torchvision
+tqdm
+google-cloud-storage
