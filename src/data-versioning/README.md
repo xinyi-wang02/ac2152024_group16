@@ -9,3 +9,9 @@ We have the containerized data versioning strategy to ensure that it is reproduc
 `docker-shell.sh` file builds and runs a Docker container with access to necessary secrets, Google Cloud credentials, and local configurations, enabling privileged operations and data versioning for a project within a Google Cloud environment.
 
 `docker-entrypoint.sh` authenticates with Google Cloud, mounts a Google Cloud Storage (GCS) bucket to a local directory using gcsfuse, checks if the mount was successful, and then binds the mounted GCS folder to a local directory for use in the application environment, before launching a Python environment using pipenv.
+
+Terminal Screenshot (dvc add command)
+![Screenshot 2024-10-18 at 8 09 39 PM](https://github.com/user-attachments/assets/f259ba96-d874-4b2b-803e-121d42fb4323)
+
+GCS Screenshot (dvc_store folder)
+![Screenshot 2024-10-18 at 8 12 16 PM](https://github.com/user-attachments/assets/052ddc0b-9b54-438c-86ef-5c76be18ef60)
