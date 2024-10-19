@@ -31,7 +31,7 @@
     └── models
         ├── Dockerfile
         ├── requirements.txt
-	      ├── vm_instance_screenshot.png
+        ├── vm_instance_screenshot.png
         └── train_model.py
 ```
 
