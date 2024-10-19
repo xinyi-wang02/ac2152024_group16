@@ -6,11 +6,12 @@
 ├── README.md
 ├── data # DO NOT UPLOAD DATA TO GITHUB, only .gitkeep to keep the directory or a really small sample
 ├── notebooks
+|   └── README.md
 │   └── eda_notebook.ipynb
 │   └── model_finetune_experiment.ipynb
 ├── references
 ├── reports
-│   └── Statement of Work_Sample.pdf
+│   └── AC215_milestone2_group16.pdf
 └── src
     ├── datapipeline
     │   ├── data_loader.py
@@ -20,6 +21,7 @@
     │   ├── docker-shell.sh
     │   ├── preprocess.py
     │   ├── entrypoint.sh
+    │   ├── screenshots.png
     └── data-versioning
     |   ├── car_preprocessed_dataset.dvc
     |   ├── Dockerfile
@@ -29,10 +31,10 @@
     │   ├── docker-entrypoint.sh
     │   ├── README.md
     └── models
-        ├── Dockerfile
-        ├── requirements.txt
-        ├── vm_instance_screenshot.png
-        └── train_model.py
+    |   ├── Dockerfile
+    |   ├── requirements.txt
+    |   ├── vm_instance_screenshot.png
+    |   └── train_model.py
 ```
 
 # AC215 - Milestone2 - CarsAI
