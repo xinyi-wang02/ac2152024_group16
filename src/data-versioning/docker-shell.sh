@@ -3,11 +3,11 @@
 set -e
 
 export BASE_DIR=$(pwd)
-export SECRETS_DIR=$(pwd)/../../secrets/
+export SECRETS_DIR=$(pwd)/../../../secrets/
 export GCS_BUCKET_NAME="cs215_car_dataset_w_class"
 export GCP_PROJECT="my-test-project-215"
 export GCP_ZONE="us-central1-a"
-export GOOGLE_APPLICATION_CREDENTIALS="../../secrets/my-test-project-215-c8ca0d964844.json"
+export GOOGLE_APPLICATION_CREDENTIALS="../../../secrets/my-test-project-215-c8ca0d964844.json"
 
 echo "Building image"
 docker build -t data-version-cli -f Dockerfile .
