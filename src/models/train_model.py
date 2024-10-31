@@ -1,22 +1,15 @@
-import gc
-import os
-import io
-import pandas as pd
 import argparse
-from PIL import Image
-from matplotlib import pyplot as plt
-from numpy import unravel_index
-
-from sklearn.model_selection import train_test_split
+import os
+import pandas as pd
+from torchvision import transforms
+from torch.utils.data import DataLoader
+from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import models
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, Dataset
-from tqdm import tqdm
-
-from google.cloud import storage
+from sklearn.model_selection import train_test_split
+from PIL import Image
 
 
 def split_csv(csv_path, train_csv_path, test_csv_path, test_size=0.2, random_state=42):
@@ -87,26 +80,17 @@ class ImageDataset(Dataset):
     """
     Custom Dataset for loading images and labels from the subset CSV.
     """
-    def __init__(self, csv_file, bucket_name, transform=None):
+    def __init__(self, csv_file, images_folder, transform=None):
         self.df = pd.read_csv(csv_file)
-        self.bucket_name = bucket_name
-        self.client = storage.Client()
+        self.images_folder = images_folder
         self.transform = transform
 
     def __len__(self):
         return len(self.df)
-
-    def read_image_from_gcs(self, image_path):
-        """Reads an image from GCS."""
-        bucket = self.client.bucket(self.bucket_name)
-        blob = bucket.blob(image_path)
-        image_bytes = blob.download_as_bytes()
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        return image
     
     def __getitem__(self, idx):
         img_name = os.path.join(self.images_folder, self.df.iloc[idx]['image_name'])
-        image = self.read_image_from_gcs(img_name)
+        image = Image.open(img_name).convert("RGB")
         label = int(self.df.iloc[idx]['label_encoded'])
 
         if self.transform:
@@ -114,7 +98,7 @@ class ImageDataset(Dataset):
 
         return { 'image' : image, 'label':label, 'img_name': img_name }
     
-def create_dataloader(loader_csv_path, bucket_name, all_images_folder, batch_size):
+def create_dataloader(loader_csv_path, all_images_folder, batch_size):
     """
     Creates a DataLoader from the subset CSV file.
 
@@ -131,7 +115,7 @@ def create_dataloader(loader_csv_path, bucket_name, all_images_folder, batch_siz
         transforms.ToTensor(),          # Convert images to PyTorch tensors
     ])
 
-    dataset = ImageDataset(csv_file=loader_csv_path, bucket_name=bucket_name, images_folder=all_images_folder, transform=transform)
+    dataset = ImageDataset(csv_file=loader_csv_path, images_folder=all_images_folder, transform=transform)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     return dataloader
@@ -192,28 +176,36 @@ def fine_tune_resnet(train_loader, num_classes=195, num_epochs=5, learning_rate=
 
 
 
-csv_path = "/cs215_car_dataset_w_class/car_preprocessed_folder/class_label.csv"
-train_csv_path = "/cs215_car_dataset_w_class/car_preprocessed_folder/train_class_label.csv"
-test_csv_path = "/cs215_car_dataset_w_class/car_preprocessed_folder/test_class_label.csv"
-test_size = 0.2
-random_state = 42
+def main():
+    parser = argparse.ArgumentParser(description="Train a car model recognition system.")
+    parser.add_argument('--csv_path', type=str, default="subset_car_images_mock.csv", help='Path to the original CSV.')
+    parser.add_argument('--train_csv_path', type=str, default="train_class_label.csv", help='Path to save the train CSV.')
+    parser.add_argument('--test_csv_path', type=str, default="test_class_label.csv", help='Path to save the test CSV.')
+    parser.add_argument('--test_size', type=float, default=0.2, help='Proportion of the data for testing.')
+    parser.add_argument('--random_state', type=int, default=42, help='Random seed for reproducibility.')
+    parser.add_argument('--all_images_folder', type=str, default="all_images_mock", help='Folder containing all images.')
+    parser.add_argument('--train_iteration_folder', type=str, default="train_iteration", help='Folder to save the iteration CSV.')
+    parser.add_argument('--num_img', type=int, default=10, help='Number of images to sample.')
+    parser.add_argument('--train_or_not', action='store_true', help='Flag to determine train or test subset.')
+    parser.add_argument('--batch_size', type=int, default=5, help='Batch size for DataLoader.')
+    parser.add_argument('--num_classes', type=int, default=196, help='Number of output classes.')
+    parser.add_argument('--num_epochs', type=int, default=5, help='Number of training epochs.')
+    parser.add_argument('--learning_rate', type=float, default=0.0001, help='Learning rate for the optimizer.')
 
-subset_csv_path = train_csv_path
-all_images_folder = "/cs215_car_dataset_w_class/car_preprocessed_folder/all_images"
-train_iteration_folder = "/cs215_car_dataset_w_class/train_iteration"
-num_img = 128
-train_or_not = True
+    args = parser.parse_args()
 
-loader_csv_path = subset_csv_path
-bucket_name = "cs215_car_dataset_w_class"
-all_images_folder = "/cs215_car_dataset_w_class/car_preprocessed_folder/all_images"
-batch_size = 32
+    args = parser.parse_args()
 
-num_classes=195
-num_epochs=5
-learning_rate=0.0001
+    split_csv(args.csv_path, args.train_csv_path, args.test_csv_path, args.test_size, args.random_state)
+    loader_csv_path = create_subset_csv(
+        args.train_csv_path if args.train_or_not else args.test_csv_path,
+        args.all_images_folder,
+        args.train_iteration_folder,
+        args.num_img,
+        args.train_or_not
+    )
+    train_loader = create_dataloader(loader_csv_path, args.all_images_folder, args.batch_size)
+    fine_tune_resnet(train_loader, args.num_classes, args.num_epochs, args.learning_rate)
 
-split_csv(csv_path, train_csv_path, test_csv_path, test_size, random_state)
-create_subset_csv(subset_csv_path, all_images_folder, train_iteration_folder, num_img, train_or_not)
-train_loader = create_dataloader(loader_csv_path, bucket_name, all_images_folder, batch_size)
-fine_tune_resnet(train_loader, num_classes, num_epochs, learning_rate)
+if __name__ == "__main__":
+    main()
