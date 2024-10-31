@@ -42,7 +42,8 @@
     |   ├── main.py
     |   ├── load.py
     |   └── model.pth
-
+    |   └── screenshot.png
+    |   └── screenshot_1.png
 ```
 
 # AC215 - Milestone2 - CarsAI
@@ -97,7 +98,7 @@ User can modify `entrypoint.sh` to change parameters
 - The screenshot of Virtual Machine Instance was produced from a CPU-based machine
 
 **Model Serving**
-- Our model serving is encapsulated in a Docker container, creating an isolated environment that enables seamless deployment on Vertex AI through Cloud Run. The main.py script is designed for flexible deployment, allowing the model to run both locally and on Vertex AI. Additionally, we’ve developed a test.py script to verify the deployment, ensuring the model functions correctly once hosted.
+- Our model serving is encapsulated in a Docker container, creating an isolated environment that enables seamless deployment on Vertex AI through Cloud Run. The main.py script is designed for flexible deployment, allowing the model to run both locally and on Vertex AI. Additionally, we’ve developed a test.py script to verify the deployment, ensuring the model functions correctly once hosted. The screenshots show the model being hosted locally on your computer and a sample prediction.
 
 **Notebooks/Reports**
 This folder contains code that is not part of container - EDA, experiment model fine-tuning notebook, and statement of work.
