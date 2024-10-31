@@ -1,6 +1,6 @@
-## Milestone 2 
+## Milestone 3 
 
-#### Project Milestone 2 Organization
+#### Project Milestone 3 Organization
 
 ```
 ├── README.md
@@ -35,6 +35,14 @@
     |   ├── requirements.txt
     |   ├── vm_instance_screenshot.png
     |   └── train_model.py
+    └── serving
+    |   ├── Dockerfile
+    |   ├── requirements.txt
+    |   ├── test.py
+    |   ├── main.py
+    |   ├── load.py
+    |   └── model.pth
+
 ```
 
 # AC215 - Milestone2 - CarsAI
@@ -87,6 +95,9 @@ User can modify `entrypoint.sh` to change parameters
 **Models scripts**
 - The model folder contains a model fine-tuning script, Dockerfile and package requirements. By the end of this milestone, We are working on running the model train process on a virtual machine instance with CPU. We will set up the model fine-tuning workflow on a virtual machine instance with GPU in future work. 
 - The screenshot of Virtual Machine Instance was produced from a CPU-based machine
+
+**Model Serving**
+- Our model serving is encapsulated in a Docker container, creating an isolated environment that enables seamless deployment on Vertex AI through Cloud Run. The main.py script is designed for flexible deployment, allowing the model to run both locally and on Vertex AI. Additionally, we’ve developed a test.py script to verify the deployment, ensuring the model functions correctly once hosted.
 
 **Notebooks/Reports**
 This folder contains code that is not part of container - EDA, experiment model fine-tuning notebook, and statement of work.
