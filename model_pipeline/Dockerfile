@@ -6,14 +6,17 @@ FROM python:3.8-slim-buster
 ENV PYENV_SHELL=/bin/bash
 
 # Ensure we have an up to date baseline, install dependencies 
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends build-essential git && \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install pipenv
+
+WORKDIR /app
 
 # Install Python dependencies
 RUN pip install --no-cache-dir \
+    pipenv \
     pandas \
     torch \
     torchvision \
@@ -22,7 +25,9 @@ RUN pip install --no-cache-dir \
     pillow
 
 # Add Pipfile, Pipfile.lock + python code
-#ADD . /
+ADD Pipfile Pipfile.lock /app/
+
+RUN pipenv sync
 
 # Entry point
 ENTRYPOINT ["/bin/bash"]

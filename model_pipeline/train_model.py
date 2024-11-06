@@ -2,7 +2,7 @@ import argparse
 import os
 import pandas as pd
 from torchvision import transforms
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 import torch
 import torch.nn as nn
@@ -178,15 +178,15 @@ def fine_tune_resnet(train_loader, num_classes=195, num_epochs=5, learning_rate=
 
 def main():
     parser = argparse.ArgumentParser(description="Train a car model recognition system.")
-    parser.add_argument('--csv_path', type=str, default="subset_car_images_mock.csv", help='Path to the original CSV.')
-    parser.add_argument('--train_csv_path', type=str, default="train_class_label.csv", help='Path to save the train CSV.')
-    parser.add_argument('--test_csv_path', type=str, default="test_class_label.csv", help='Path to save the test CSV.')
+    parser.add_argument('--csv_path', type=str, default="/app/subset_car_images_mock.csv", help='Path to the original CSV.')
+    parser.add_argument('--train_csv_path', type=str, default="/app/train_class_label.csv", help='Path to save the train CSV.')
+    parser.add_argument('--test_csv_path', type=str, default="/app/test_class_label.csv", help='Path to save the test CSV.')
     parser.add_argument('--test_size', type=float, default=0.2, help='Proportion of the data for testing.')
     parser.add_argument('--random_state', type=int, default=42, help='Random seed for reproducibility.')
-    parser.add_argument('--all_images_folder', type=str, default="all_images_mock", help='Folder containing all images.')
-    parser.add_argument('--train_iteration_folder', type=str, default="train_iteration", help='Folder to save the iteration CSV.')
+    parser.add_argument('--all_images_folder', type=str, default="/app/all_images_mock", help='Folder containing all images.')
+    parser.add_argument('--train_iteration_folder', type=str, default="/app/train_iteration", help='Folder to save the iteration CSV.')
     parser.add_argument('--num_img', type=int, default=10, help='Number of images to sample.')
-    parser.add_argument('--train_or_not', action='store_true', help='Flag to determine train or test subset.')
+    parser.add_argument('--train_or_not', default=True, help='Flag to determine train or test subset.')
     parser.add_argument('--batch_size', type=int, default=5, help='Batch size for DataLoader.')
     parser.add_argument('--num_classes', type=int, default=196, help='Number of output classes.')
     parser.add_argument('--num_epochs', type=int, default=5, help='Number of training epochs.')
@@ -204,7 +204,7 @@ def main():
         args.num_img,
         args.train_or_not
     )
-    train_loader = create_dataloader(loader_csv_path, args.all_images_folder, args.batch_size)
+    train_loader = create_dataloader(args.train_csv_path, args.all_images_folder, args.batch_size)
     fine_tune_resnet(train_loader, args.num_classes, args.num_epochs, args.learning_rate)
 
 if __name__ == "__main__":
